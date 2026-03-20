@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 
-const FROM_EMAIL = 'Mindcare of America <noreply@mindcareofamerica.com>';
+const FROM_EMAIL = 'Mindcare of America <onboarding@resend.dev>';
 const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || 'Mindcareofamerica@gmail.com';
 
 function getResend() {
