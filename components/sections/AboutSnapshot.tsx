@@ -7,7 +7,7 @@ import { ArrowRight, Users, Video } from "lucide-react";
 import { useRef } from "react";
 
 const textLines = [
-  "Founded in 2022 by Dr. Ezechiel Madestin, Mindcare of America provides comprehensive mental healthcare services to individuals of all ages.",
+  "Founded in 2022 by Dr. Ezechiel Madestin, Mindcare of America is a trusted psychiatric clinic in Atlantis, FL providing comprehensive mental healthcare services to individuals and families of all ages throughout Palm Beach County and South Florida.",
   "We focus on healing the mind to promote human psychosocial development.",
 ];
 
@@ -70,8 +70,9 @@ export function AboutSnapshot() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              Our team of passionate healthcare professionals is committed to serving
-              clients with diverse mental health needs using a patient-centered
+              Our team of licensed psychiatric providers is committed to serving
+              clients with diverse mental health needs — from depression, anxiety, and ADHD
+              to bipolar disorder and PTSD — using a patient-centered
               approach for complete recovery.
             </motion.p>
 
@@ -105,14 +106,14 @@ export function AboutSnapshot() {
 
             <motion.div
               style={{ y: imageY }}
-              className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-primary-light to-accent-light flex items-center justify-center"
+              className="relative aspect-[4/3] overflow-hidden rounded-2xl"
             >
               <Image
-                src="/logo.png"
-                alt="Mindcare of America"
-                width={300}
-                height={300}
-                className="h-48 w-auto opacity-80"
+                src="/dr-madestin.png"
+                alt="Dr. Ezechiel Madestin — Founder of Mindcare of America, psychiatrist in Atlantis FL"
+                width={600}
+                height={450}
+                className="h-full w-full object-cover"
               />
             </motion.div>
 

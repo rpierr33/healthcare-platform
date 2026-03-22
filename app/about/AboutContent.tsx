@@ -89,13 +89,21 @@ export function AboutContent() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
+              className="relative"
             >
-              <div className="rounded-2xl bg-primary-light p-8">
-                <h3 className="font-display text-xl font-bold text-primary">Our Fundamental Belief</h3>
-                <p className="mt-4 text-neutral-dark leading-relaxed italic">
-                  &ldquo;We believe the stigmatization of mental illnesses must be banished. We also believe
-                  that people suffering from mental illnesses can be completely restored if they get
-                  appropriate treatment.&rdquo;
+              <div className="overflow-hidden rounded-2xl">
+                <Image
+                  src="/dr-madestin-2.png"
+                  alt="Dr. Ezechiel Madestin providing compassionate psychiatric care at Mindcare of America"
+                  width={600}
+                  height={450}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 rounded-b-2xl bg-gradient-to-t from-neutral-dark/80 to-transparent px-6 pb-6 pt-12">
+                <p className="text-sm font-medium text-white/90 italic leading-relaxed">
+                  &ldquo;We believe the stigmatization of mental illnesses must be banished. People suffering
+                  from mental illnesses can be completely restored if they get appropriate treatment.&rdquo;
                 </p>
               </div>
             </motion.div>
@@ -162,8 +170,14 @@ export function AboutContent() {
             viewport={{ once: true }}
             className="mx-auto mt-12 max-w-2xl rounded-2xl bg-white p-8 shadow-md text-center"
           >
-            <div className="mx-auto mb-6 flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-primary-light to-accent-light">
-              <Image src="/logo.png" alt="Dr. Ezechiel Madestin" width={80} height={80} className="h-20 w-auto" />
+            <div className="mx-auto mb-6 h-40 w-40 overflow-hidden rounded-full ring-4 ring-primary/20">
+              <Image
+                src="/dr-madestin.png"
+                alt="Dr. Ezechiel Madestin — Founder & Psychiatric Provider at Mindcare of America"
+                width={160}
+                height={160}
+                className="h-full w-full object-cover"
+              />
             </div>
             <h3 className="text-2xl font-bold text-neutral-dark">Dr. Ezechiel Madestin</h3>
             <p className="text-primary font-medium">Founder & Psychiatric Provider</p>
