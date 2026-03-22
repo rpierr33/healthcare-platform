@@ -7,9 +7,9 @@ export default function NotFound() {
       <Image
         src="/logo.png"
         alt="Mindcare of America"
-        width={80}
-        height={80}
-        className="mb-8 h-20 w-auto opacity-50"
+        width={220}
+        height={70}
+        className="mb-8 h-24 w-auto opacity-50"
       />
       <h1 className="font-display text-6xl font-bold text-primary">404</h1>
       <h2 className="mt-4 font-display text-2xl font-bold text-neutral-dark">

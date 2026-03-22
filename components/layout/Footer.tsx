@@ -22,18 +22,13 @@ export function Footer() {
               <Image
                 src="/logo.png"
                 alt="Mindcare of America"
-                width={64}
-                height={64}
-                className="h-16 w-auto mb-5"
+                width={220}
+                height={70}
+                className="h-20 w-auto mb-5"
               />
-              <p className="text-xl font-bold tracking-tight text-white">
-                Mindcare of America
-              </p>
-              <p className="mt-1.5 text-base font-medium text-secondary">
-                Your Wellness is Our Passion
-              </p>
               <p className="mt-4 text-sm text-gray-400 leading-relaxed">
-                Comprehensive mental healthcare services for individuals of all ages.
+                Psychiatry, therapy, and medication management for all ages in Atlantis, FL.
+                Serving Palm Beach County and all of Florida via telehealth.
               </p>
 
               {/* Social Media Links */}
@@ -135,10 +130,10 @@ export function Footer() {
                 <li className="flex items-center gap-3">
                   <Mail size={18} className="shrink-0 text-secondary" />
                   <a
-                    href="mailto:Mindcareofamerica@gmail.com"
+                    href="mailto:info@mindcareofamerica.com"
                     className="group relative inline-block text-sm text-gray-300 transition-colors duration-300 hover:text-white"
                   >
-                    Mindcareofamerica@gmail.com
+                    info@mindcareofamerica.com
                     <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-secondary transition-all duration-300 group-hover:w-full" />
                   </a>
                 </li>

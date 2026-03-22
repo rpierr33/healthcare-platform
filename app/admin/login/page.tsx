@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/client";
 import { Lock, Mail } from "lucide-react";
 
 export default function AdminLoginPage() {
@@ -18,13 +17,13 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError("");
 
-    const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
     });
 
-    if (authError) {
+    if (!res.ok) {
       setError("Invalid email or password");
       setLoading(false);
       return;
@@ -38,7 +37,7 @@ export default function AdminLoginPage() {
     <div className="flex min-h-[80vh] items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Image src="/logo.png" alt="Mindcare of America" width={60} height={60} className="mx-auto h-16 w-auto" />
+          <Image src="/logo.png" alt="Mindcare of America" width={200} height={60} className="mx-auto h-20 w-auto" />
           <h1 className="mt-4 font-display text-2xl font-bold text-neutral-dark">Admin Login</h1>
           <p className="mt-1 text-sm text-neutral-mid">Sign in to access the dashboard</p>
         </div>

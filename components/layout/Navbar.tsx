@@ -72,22 +72,14 @@ export function Navbar() {
         )}
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center">
             <Image
               src="/logo.png"
               alt="Mindcare of America"
-              width={50}
-              height={50}
-              className="h-12 w-auto"
+              width={200}
+              height={60}
+              className="h-14 w-auto"
             />
-            <div className="hidden sm:block">
-              <p className="text-lg font-bold text-primary">
-                Mindcare of America
-              </p>
-              <p className="text-xs text-neutral-mid">
-                Your Wellness is Our Passion
-              </p>
-            </div>
           </Link>
 
           {/* Desktop Nav */}
