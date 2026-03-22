@@ -22,9 +22,9 @@ export function Footer() {
               <Image
                 src="/logo.png"
                 alt="Mindcare of America"
-                width={220}
-                height={70}
-                className="h-20 w-auto mb-5"
+                width={300}
+                height={90}
+                className="h-28 w-auto mb-5"
               />
               <p className="mt-4 text-sm text-gray-400 leading-relaxed">
                 Psychiatry, therapy, and medication management for all ages in Atlantis, FL.

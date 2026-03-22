@@ -76,9 +76,9 @@ export function Navbar() {
             <Image
               src="/logo.png"
               alt="Mindcare of America"
-              width={200}
-              height={60}
-              className="h-14 w-auto"
+              width={280}
+              height={80}
+              className="h-20 w-auto"
             />
           </Link>
 
