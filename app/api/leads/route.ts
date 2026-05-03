@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import pool from "@/lib/db";
 import { sendConfirmationEmail, sendNotificationEmail } from "@/lib/email/templates";
 import { z } from "zod/v4";
 import { leadSchema } from "@/lib/validations/schemas";
@@ -19,24 +19,21 @@ export async function POST(request: Request) {
     const data = leadSchema.parse(body);
     const safe = sanitizeObject(data);
 
-    const supabase = createAdminClient();
-
-    const { error: dbError } = await supabase.from("leads").insert({
-      first_name: safe.firstName,
-      last_name: safe.lastName,
-      email: safe.email,
-      phone: safe.phone,
-      dob: safe.dob || null,
-      preferred_contact: safe.preferredContact,
-      conditions: safe.conditions,
-      insurance: safe.insurance,
-      message: safe.message || null,
-    });
-
-    if (dbError) {
-      console.error("Database error:", dbError);
-      return NextResponse.json({ error: "Failed to save" }, { status: 500 });
-    }
+    await pool.query(
+      `INSERT INTO leads (first_name, last_name, email, phone, dob, preferred_contact, conditions, insurance, message)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      [
+        safe.firstName,
+        safe.lastName,
+        safe.email,
+        safe.phone,
+        safe.dob || null,
+        safe.preferredContact,
+        safe.conditions,
+        safe.insurance,
+        safe.message || null,
+      ]
+    );
 
     // Send emails (non-blocking)
     try {

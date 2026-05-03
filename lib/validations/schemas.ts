@@ -29,6 +29,7 @@ export const insuranceProviders = [
   "Oxford Plan",
   "Florida Blue (Blue Cross/Blue Shield)",
   "Self-Pay",
+  "I'm Not Sure",
   "Other",
 ] as const;
 

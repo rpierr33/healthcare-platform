@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import pool from "@/lib/db";
+import { verifySession } from "@/lib/auth";
+
+const ALLOWED_TABLES = ["leads", "appointments"];
 
 export async function GET(request: Request) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
+  const session = await verifySession();
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -14,15 +14,13 @@ export async function GET(request: Request) {
   const table = searchParams.get("table") || "leads";
   const format = searchParams.get("format");
 
-  const admin = createAdminClient();
-  const { data, error } = await admin
-    .from(table)
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  if (!ALLOWED_TABLES.includes(table)) {
+    return NextResponse.json({ error: "Invalid table" }, { status: 400 });
   }
+
+  const { rows: data } = await pool.query(
+    `SELECT * FROM ${table} ORDER BY created_at DESC`
+  );
 
   if (format === "csv") {
     if (!data || data.length === 0) {
@@ -52,10 +50,8 @@ export async function GET(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
+  const session = await verifySession();
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -66,12 +62,14 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
-  const admin = createAdminClient();
-  const { error } = await admin.from(table).update({ status }).eq("id", id);
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  if (!ALLOWED_TABLES.includes(table)) {
+    return NextResponse.json({ error: "Invalid table" }, { status: 400 });
   }
+
+  await pool.query(
+    `UPDATE ${table} SET status = $1 WHERE id = $2`,
+    [status, id]
+  );
 
   return NextResponse.json({ success: true });
 }

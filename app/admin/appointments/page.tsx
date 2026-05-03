@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { ArrowLeft, FileDown, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -42,9 +41,8 @@ export default function AppointmentsPage() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
+      const res = await fetch("/api/auth/check");
+      if (!res.ok) {
         router.push("/admin/login");
         return;
       }

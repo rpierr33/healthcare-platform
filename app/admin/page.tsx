@@ -3,8 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
-import { Users, Calendar, FileDown, RefreshCw, Inbox } from "lucide-react";
+import { Users, Calendar, FileDown, RefreshCw, Inbox, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Lead = {
@@ -24,7 +23,6 @@ const statuses = ["new", "contacted", "scheduled", "closed"];
 export default function AdminDashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<unknown>(null);
   const router = useRouter();
 
   const fetchData = useCallback(async () => {
@@ -40,13 +38,11 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
+      const res = await fetch("/api/auth/check");
+      if (!res.ok) {
         router.push("/admin/login");
         return;
       }
-      setUser(user);
       fetchData();
     };
     checkAuth();
@@ -68,8 +64,7 @@ export default function AdminDashboard() {
   };
 
   const handleSignOut = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    await fetch("/api/auth/logout", { method: "POST" });
     router.push("/admin/login");
   };
 
@@ -97,6 +92,13 @@ export default function AdminDashboard() {
           <p className="text-sm text-neutral-mid">Manage leads and appointments</p>
         </div>
         <div className="flex items-center gap-3">
+          <Link
+            href="/admin/mail"
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-neutral-dark hover:bg-neutral-light"
+          >
+            <Mail size={16} className="mr-1.5 inline" />
+            Mail
+          </Link>
           <Link
             href="/admin/appointments"
             className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-neutral-dark hover:bg-neutral-light"
