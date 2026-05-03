@@ -4,14 +4,16 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { Calendar, Shield, Zap, Clock, Send, CheckCircle, Video, Building2 } from "lucide-react";
+import { Calendar, Zap, Send, CheckCircle, Video, Building2, Phone, ArrowRight, ExternalLink } from "lucide-react";
 import { appointmentSchema, type AppointmentFormData, conditions, insuranceProviders } from "@/lib/validations/schemas";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { SITE_CONFIG } from "@/lib/site-config";
 
-type BookingTab = "zocdoc" | "direct";
+type BookingTab = "portals" | "direct";
 
 export function BookContent() {
-  const [activeTab, setActiveTab] = useState<BookingTab>("direct");
+  const [activeTab, setActiveTab] = useState<BookingTab>("portals");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -30,6 +32,8 @@ export function BookContent() {
     },
   });
 
+  const errorMsg = `Something went wrong. Please try again or call our office at ${SITE_CONFIG.phone.landline.display}.`;
+
   const onSubmit = async (data: AppointmentFormData) => {
     setSubmitting(true);
     setError("");
@@ -42,10 +46,10 @@ export function BookContent() {
       if (res.ok) {
         setSubmitted(true);
       } else {
-        setError("Something went wrong. Please try again or call us directly.");
+        setError(errorMsg);
       }
     } catch {
-      setError("Something went wrong. Please try again or call us directly.");
+      setError(errorMsg);
     } finally {
       setSubmitting(false);
     }
@@ -54,7 +58,7 @@ export function BookContent() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-b from-primary-light to-white py-20">
+      <section className="bg-gradient-to-b from-cream via-primary-light/40 to-white py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -64,6 +68,9 @@ export function BookContent() {
             <h1 className="font-display text-4xl font-bold text-neutral-dark sm:text-5xl">
               Book an Appointment
             </h1>
+            <p className="mt-3 font-display text-lg italic text-secondary-dark sm:text-xl">
+              {SITE_CONFIG.tagline}
+            </p>
             <p className="mt-4 text-lg text-neutral-mid">
               Choose your preferred booking method below. We offer both in-person and telehealth appointments.
             </p>
@@ -76,6 +83,18 @@ export function BookContent() {
           {/* Tabs */}
           <div className="mb-8 flex rounded-xl bg-neutral-light p-1">
             <button
+              onClick={() => setActiveTab("portals")}
+              className={cn(
+                "flex-1 rounded-lg py-3 text-sm font-semibold transition-all",
+                activeTab === "portals"
+                  ? "bg-white text-primary shadow-sm"
+                  : "text-neutral-mid hover:text-neutral-dark"
+              )}
+            >
+              <Zap size={16} className="mr-1.5 inline" />
+              Book Instantly
+            </button>
+            <button
               onClick={() => setActiveTab("direct")}
               className={cn(
                 "flex-1 rounded-lg py-3 text-sm font-semibold transition-all",
@@ -84,25 +103,13 @@ export function BookContent() {
                   : "text-neutral-mid hover:text-neutral-dark"
               )}
             >
-              <Zap size={16} className="mr-1.5 inline" />
-              Book Directly With Us
-            </button>
-            <button
-              onClick={() => setActiveTab("zocdoc")}
-              className={cn(
-                "flex-1 rounded-lg py-3 text-sm font-semibold transition-all",
-                activeTab === "zocdoc"
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-neutral-mid hover:text-neutral-dark"
-              )}
-            >
-              <Shield size={16} className="mr-1.5 inline" />
-              Book via Telehealth Platforms
+              <Phone size={16} className="mr-1.5 inline" />
+              Request a Call
             </button>
           </div>
 
           {/* Tab Content */}
-          {activeTab === "zocdoc" ? (
+          {activeTab === "portals" ? (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -110,42 +117,71 @@ export function BookContent() {
             >
               <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
                 <h3 className="font-display text-xl font-bold text-neutral-dark">
-                  For Telehealth Visits Across Florida
+                  Choose an Online Booking Portal
                 </h3>
                 <p className="mt-2 text-neutral-mid">
-                  Choose your insurance provider below to book a telehealth appointment through our partner platforms.
+                  Schedule your visit through our practice portal or one of our insurance-tied platforms.
                 </p>
 
                 <div className="mt-6 space-y-4">
-                  <div className="rounded-xl bg-accent-light p-6">
-                    <h4 className="font-semibold text-neutral-dark">
-                      Medicare, Florida Medicaid, Aetna, Cigna, Optum, United Healthcare
+                  {/* EnableDoc — practice's own portal, FIRST card */}
+                  <div className="relative rounded-xl border-2 border-primary bg-gradient-to-br from-primary-light/60 to-cream p-6">
+                    <span className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm">
+                      Recommended
+                    </span>
+                    <h4 className="mt-1 font-semibold text-neutral-dark">
+                      Mindcare of America Booking Portal
                     </h4>
-                    <p className="mt-1 text-sm text-neutral-mid">Book through Grow Therapy</p>
+                    <p className="mt-1 text-sm text-neutral-mid">
+                      {SITE_CONFIG.booking.enableDoc.description} Available for all visit types — psychiatric evaluation, medication management, and psychotherapy.
+                    </p>
                     <a
-                      href="https://growtherapy.com/book-appointment?id=35965&utm_source=provider-sourced&utm_medium=booking-link&utm_campaign=provider-dashboard"
+                      href={SITE_CONFIG.booking.enableDoc.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-3 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-accent/90"
+                      className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-primary/30 transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/40"
                     >
                       <Calendar size={16} />
-                      Book on Grow Therapy
+                      Schedule Online
+                      <ExternalLink size={14} />
                     </a>
                   </div>
 
-                  <div className="rounded-xl bg-secondary-light p-6">
+                  {/* Grow Therapy */}
+                  <div className="rounded-xl bg-accent-light p-6">
                     <h4 className="font-semibold text-neutral-dark">
-                      Oscar Health, Oxford Plan, Florida Blue, United Healthcare, Aetna, Cigna
+                      {SITE_CONFIG.booking.growTherapy.label}
                     </h4>
-                    <p className="mt-1 text-sm text-neutral-mid">Book through Headway</p>
+                    <p className="mt-1 text-sm text-neutral-mid">
+                      For: {SITE_CONFIG.booking.growTherapy.insurances}
+                    </p>
                     <a
-                      href="https://headway.co/providers/ezechiel-madestin?utm_source=pem&utm_medium=direct_link&utm_campaign=47552"
+                      href={SITE_CONFIG.booking.growTherapy.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-3 inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-secondary/90"
+                      className="mt-3 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110"
                     >
                       <Calendar size={16} />
-                      Book on Headway
+                      Book on {SITE_CONFIG.booking.growTherapy.label}
+                    </a>
+                  </div>
+
+                  {/* Headway */}
+                  <div className="rounded-xl bg-secondary-light p-6">
+                    <h4 className="font-semibold text-neutral-dark">
+                      {SITE_CONFIG.booking.headway.label}
+                    </h4>
+                    <p className="mt-1 text-sm text-neutral-mid">
+                      For: {SITE_CONFIG.booking.headway.insurances}
+                    </p>
+                    <a
+                      href={SITE_CONFIG.booking.headway.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-2 rounded-full bg-secondary-dark px-6 py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110"
+                    >
+                      <Calendar size={16} />
+                      Book on {SITE_CONFIG.booking.headway.label}
                     </a>
                   </div>
                 </div>
@@ -153,23 +189,31 @@ export function BookContent() {
 
               <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
                 <h3 className="font-display text-xl font-bold text-neutral-dark">
-                  For In-Office Visits
+                  Prefer to Call?
                 </h3>
                 <p className="mt-2 text-neutral-mid">
-                  Visit us at our Atlantis, FL office. Call us or use the direct booking form.
+                  Reach our office directly to schedule your visit at our Atlantis, FL location or via telehealth.
                 </p>
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                   <a
-                    href="tel:5617970724"
+                    href={`tel:${SITE_CONFIG.phone.landline.tel}`}
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white"
                   >
-                    Call (561) 797-0724
+                    <Phone size={16} />
+                    {SITE_CONFIG.phone.landline.label}: {SITE_CONFIG.phone.landline.display}
+                  </a>
+                  <a
+                    href={`tel:${SITE_CONFIG.phone.cell.tel}`}
+                    className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary px-6 py-2.5 text-sm font-semibold text-primary"
+                  >
+                    <Phone size={16} />
+                    {SITE_CONFIG.phone.cell.label}: {SITE_CONFIG.phone.cell.display}
                   </a>
                   <button
                     onClick={() => setActiveTab("direct")}
-                    className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary px-6 py-2.5 text-sm font-semibold text-primary"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-secondary-dark px-6 py-2.5 text-sm font-semibold text-secondary-dark"
                   >
-                    Use Direct Booking Form
+                    Request a Call
                   </button>
                 </div>
               </div>
@@ -182,11 +226,45 @@ export function BookContent() {
             >
               <CheckCircle size={48} className="text-accent" />
               <h3 className="mt-4 font-display text-2xl font-bold text-neutral-dark">
-                Appointment Request Submitted!
+                Request Sent!
               </h3>
               <p className="mt-2 text-neutral-mid">
-                We&apos;ll review your request and reach out within 1 business day to confirm.
+                We&apos;ll call you back within 1 business day to confirm your appointment.
               </p>
+              <div className="mt-2 rounded-lg bg-white/60 px-4 py-3">
+                <p className="text-sm text-neutral-mid">
+                  <strong className="text-neutral-dark">What happens next:</strong> Our scheduling coordinator will call or email you to confirm the date, time, and any preparation needed for your visit.
+                </p>
+              </div>
+              <div className="mt-6 space-y-3">
+                <p className="text-sm text-neutral-mid">
+                  Need to reach us sooner?
+                </p>
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <a
+                    href={`tel:${SITE_CONFIG.phone.landline.tel}`}
+                    className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-primary-dark"
+                  >
+                    <Phone size={16} />
+                    {SITE_CONFIG.phone.landline.display}
+                  </a>
+                  <a
+                    href={`tel:${SITE_CONFIG.phone.cell.tel}`}
+                    className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-6 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary hover:text-white"
+                  >
+                    <Phone size={16} />
+                    {SITE_CONFIG.phone.cell.display}
+                  </a>
+                </div>
+                <div className="pt-2">
+                  <Link
+                    href="/services"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary-dark"
+                  >
+                    Learn more about our services <ArrowRight size={14} />
+                  </Link>
+                </div>
+              </div>
             </motion.div>
           ) : (
             <motion.form
@@ -197,10 +275,10 @@ export function BookContent() {
             >
               <div className="mb-6">
                 <h3 className="font-display text-xl font-bold text-neutral-dark">
-                  Book Directly With Us
+                  Request a Call
                 </h3>
                 <p className="mt-1 text-sm text-neutral-mid">
-                  Fastest for self-pay or urgent requests. Fields marked * are required.
+                  Share your preferences and our scheduling coordinator will call you back within 1 business day to confirm your appointment. Fields marked * are required.
                 </p>
               </div>
 
@@ -226,7 +304,7 @@ export function BookContent() {
                   {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-neutral-dark" htmlFor="dob">Date of Birth</label>
+                  <label className="block text-sm font-medium text-neutral-dark" htmlFor="dob">Date of Birth <span className="text-neutral-mid">(optional)</span></label>
                   <input id="dob" type="date" {...register("dob")} className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary" />
                 </div>
                 <div>
@@ -245,11 +323,11 @@ export function BookContent() {
                   </select>
                   {errors.insurance && <p className="mt-1 text-xs text-red-500">{errors.insurance.message}</p>}
                 </div>
-                <div>
+                <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-neutral-dark">Area of Focus *</label>
-                  <div className="mt-1 max-h-40 overflow-y-auto rounded-lg border border-gray-300 p-3">
+                  <div className="mt-1 grid grid-cols-1 gap-1.5 rounded-lg border border-gray-300 p-3 sm:grid-cols-2">
                     {conditions.map((c) => (
-                      <label key={c} className="flex items-center gap-2 py-1 text-sm">
+                      <label key={c} className="flex items-center gap-2 rounded px-1 py-1 text-sm hover:bg-neutral-light">
                         <input type="checkbox" value={c} {...register("conditions")} className="rounded border-gray-300 text-primary focus:ring-primary" />
                         {c}
                       </label>
@@ -258,7 +336,6 @@ export function BookContent() {
                   {errors.conditions && <p className="mt-1 text-xs text-red-500">{errors.conditions.message}</p>}
                 </div>
 
-                {/* Booking-specific fields */}
                 <div>
                   <label className="block text-sm font-medium text-neutral-dark" htmlFor="preferredDate">Preferred Appointment Date *</label>
                   <input id="preferredDate" type="date" {...register("preferredDate")} className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary" />
@@ -289,7 +366,7 @@ export function BookContent() {
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-medium text-neutral-dark" htmlFor="message">Message / Additional Notes</label>
+                  <label className="block text-sm font-medium text-neutral-dark" htmlFor="message">Message / Additional Notes <span className="text-neutral-mid">(optional)</span></label>
                   <textarea id="message" {...register("message")} rows={3} className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Any additional details..." />
                 </div>
               </div>
@@ -302,7 +379,7 @@ export function BookContent() {
                 className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 font-semibold text-white transition-all hover:bg-primary-dark disabled:opacity-50"
               >
                 <Send size={18} />
-                {submitting ? "Submitting..." : "Request Appointment"}
+                {submitting ? "Sending..." : "Send Request"}
               </button>
             </motion.form>
           )}

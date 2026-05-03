@@ -17,6 +17,8 @@ import {
   Building2,
   Lightbulb,
 } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/site-config";
+import { LeafDecoration } from "@/components/ui/LeafDecoration";
 
 const coreValues = [
   { icon: Heart, title: "Compassion", description: "We treat every client with empathy, kindness, and respect." },
@@ -40,8 +42,14 @@ export function AboutContent() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-b from-primary-light to-white py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-gradient-to-b from-cream via-primary-light/30 to-white py-20">
+        <div className="pointer-events-none absolute -top-6 -left-6 h-56 w-56 opacity-50">
+          <LeafDecoration variant="corner-tl" primaryColor="#1B4332" accentColor="#C9A961" className="h-full w-full" />
+        </div>
+        <div className="pointer-events-none absolute -bottom-6 -right-6 h-56 w-56 opacity-40">
+          <LeafDecoration variant="corner-br" primaryColor="#1B4332" accentColor="#C9A961" className="h-full w-full" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -51,6 +59,9 @@ export function AboutContent() {
             <h1 className="font-display text-4xl font-bold text-neutral-dark sm:text-5xl">
               About Mindcare of America
             </h1>
+            <p className="mt-3 font-display text-xl italic text-secondary-dark sm:text-2xl">
+              {SITE_CONFIG.tagline}
+            </p>
             <p className="mt-4 text-lg text-neutral-mid">
               Healing the mind. Restoring lives. Empowering communities.
             </p>
@@ -73,7 +84,7 @@ export function AboutContent() {
                 Founded on Compassion & Excellence
               </h2>
               <p className="mt-4 text-neutral-mid leading-relaxed">
-                Mindcare of America is a mental health practice founded in 2022 by Dr. Ezechiel Madestin.
+                Mindcare of America is a mental health practice founded in 2022 by {SITE_CONFIG.founder.name}.
                 We aim to provide comprehensive mental healthcare services to individuals of all ages,
                 focusing on healing the mind to promote human psychosocial development.
               </p>
@@ -91,17 +102,17 @@ export function AboutContent() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="relative"
             >
-              <div className="overflow-hidden rounded-2xl">
+              <div className="overflow-hidden rounded-2xl ring-2 ring-secondary/30 shadow-xl">
                 <Image
                   src="/dr-madestin-2.png"
-                  alt="Dr. Ezechiel Madestin providing compassionate psychiatric care at Mindcare of America"
+                  alt={`${SITE_CONFIG.founder.name} providing compassionate psychiatric care at ${SITE_CONFIG.name}`}
                   width={600}
                   height={450}
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="absolute bottom-0 left-0 right-0 rounded-b-2xl bg-gradient-to-t from-neutral-dark/80 to-transparent px-6 pb-6 pt-12">
-                <p className="text-sm font-medium text-white/90 italic leading-relaxed">
+              <div className="absolute bottom-0 left-0 right-0 rounded-b-2xl bg-gradient-to-t from-primary-dark/80 to-transparent px-6 pb-6 pt-12">
+                <p className="text-sm font-medium text-cream italic leading-relaxed">
                   &ldquo;We believe the stigmatization of mental illnesses must be banished. People suffering
                   from mental illnesses can be completely restored if they get appropriate treatment.&rdquo;
                 </p>
@@ -112,14 +123,14 @@ export function AboutContent() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="bg-neutral-light py-20">
+      <section className="bg-cream py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-8 md:grid-cols-2">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="rounded-2xl bg-white p-8 shadow-sm"
+              className="rounded-2xl border border-secondary/30 bg-white p-8 shadow-sm"
             >
               <div className="mb-4 inline-flex rounded-xl bg-primary-light p-3">
                 <Target size={28} className="text-primary" />
@@ -137,10 +148,10 @@ export function AboutContent() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="rounded-2xl bg-white p-8 shadow-sm"
+              className="rounded-2xl border border-secondary/30 bg-white p-8 shadow-sm"
             >
-              <div className="mb-4 inline-flex rounded-xl bg-accent-light p-3">
-                <Lightbulb size={28} className="text-accent" />
+              <div className="mb-4 inline-flex rounded-xl bg-secondary-light p-3">
+                <Lightbulb size={28} className="text-secondary-dark" />
               </div>
               <h3 className="font-display text-2xl font-bold text-neutral-dark">Our Vision</h3>
               <p className="mt-4 text-neutral-mid leading-relaxed">
@@ -168,23 +179,23 @@ export function AboutContent() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mx-auto mt-12 max-w-2xl rounded-2xl bg-white p-8 shadow-md text-center"
+            className="mx-auto mt-12 max-w-2xl rounded-2xl border border-secondary/30 bg-white p-8 shadow-md text-center"
           >
-            <div className="mx-auto mb-6 h-40 w-40 overflow-hidden rounded-full ring-4 ring-primary/20">
+            <div className="mx-auto mb-6 h-40 w-40 overflow-hidden rounded-full ring-4 ring-secondary/40">
               <Image
                 src="/dr-madestin.png"
-                alt="Dr. Ezechiel Madestin — Founder & Psychiatric Provider at Mindcare of America"
+                alt={`${SITE_CONFIG.founder.name} — ${SITE_CONFIG.founder.title} at ${SITE_CONFIG.name}`}
                 width={160}
                 height={160}
                 className="h-full w-full object-cover"
               />
             </div>
-            <h3 className="text-2xl font-bold text-neutral-dark">Dr. Ezechiel Madestin</h3>
-            <p className="text-primary font-medium">Founder & Psychiatric Provider</p>
+            <h3 className="text-2xl font-bold text-neutral-dark">{SITE_CONFIG.founder.name}</h3>
+            <p className="text-secondary-dark font-medium">{SITE_CONFIG.founder.title}</p>
             <p className="mt-4 text-neutral-mid leading-relaxed">
-              Dr. Madestin founded Mindcare of America in 2022 with a vision to provide compassionate,
+              {SITE_CONFIG.founder.name.split(" ")[1]} founded {SITE_CONFIG.name} in 2022 with a vision to provide compassionate,
               accessible mental health care. With extensive experience in psychiatric evaluation,
-              medication management, and psychotherapy, Dr. Madestin leads a team dedicated to helping
+              psychiatric medication management, and psychotherapy, our team is dedicated to helping
               clients achieve complete recovery and emotional well-being.
             </p>
           </motion.div>
@@ -258,15 +269,28 @@ export function AboutContent() {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary py-16">
-        <div className="mx-auto max-w-3xl px-4 text-center text-white sm:px-6 lg:px-8">
-          <h2 className="font-display text-3xl font-bold">Start Your Healing Journey</h2>
-          <p className="mt-4 text-primary-light">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-primary-dark py-16">
+        <div className="pointer-events-none absolute -top-4 -left-4 h-48 w-48 opacity-25">
+          <LeafDecoration variant="corner-tl" primaryColor="#C9A961" accentColor="#5C8A5C" className="h-full w-full" />
+        </div>
+        <div className="pointer-events-none absolute -bottom-4 -right-4 h-48 w-48 opacity-25">
+          <LeafDecoration variant="corner-br" primaryColor="#C9A961" accentColor="#5C8A5C" className="h-full w-full" />
+        </div>
+        <div className="relative mx-auto max-w-3xl px-4 text-center text-white sm:px-6 lg:px-8">
+          <p className="font-display text-2xl italic text-secondary sm:text-3xl">
+            {SITE_CONFIG.closingLine}
+          </p>
+          <p className="mt-2 text-base text-cream/85 italic">
+            {SITE_CONFIG.closingSubline}
+          </p>
+          <h2 className="mt-6 font-display text-3xl font-bold">Start Your Healing Journey</h2>
+          <p className="mt-4 text-cream/85">
             You don&apos;t have to face this alone. Let us help you take the first step.
           </p>
           <Link
             href="/book"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-semibold text-primary transition-all hover:bg-neutral-light hover:shadow-lg"
+            data-book-cta
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-secondary px-8 py-4 font-semibold text-primary-dark shadow-lg shadow-secondary/30 transition-all hover:bg-cream hover:shadow-xl"
           >
             <Calendar size={20} />
             Book an Appointment

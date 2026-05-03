@@ -8,9 +8,11 @@ import {
   CheckCircle,
   Video,
   Shield,
-  Clock,
   Heart,
+  UserCircle,
 } from "lucide-react";
+import { LeafDecoration } from "@/components/ui/LeafDecoration";
+import { SITE_CONFIG } from "@/lib/site-config";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -40,45 +42,25 @@ const badgePulse = {
   },
 };
 
-const floatAnimation = (delay: number, x: number, y: number) => ({
-  initial: { x: 0, y: 0 },
-  animate: {
-    x: [0, x, 0],
-    y: [0, y, 0],
-    transition: {
-      duration: 8 + delay,
-      repeat: Infinity,
-      ease: "easeInOut" as const,
-      delay,
-    },
-  },
-});
-
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* Layered gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary-light via-white to-white" />
-      <div className="absolute inset-0 bg-gradient-to-br from-accent-light/30 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-secondary-light/20" />
+      {/* Layered cream + soft sage background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-cream via-cream to-white" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-light/40 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-secondary-light/30" />
 
-      {/* Floating decorative gradient circles */}
-      <motion.div
-        {...floatAnimation(0, 30, -20)}
-        className="pointer-events-none absolute -top-20 left-[15%] h-72 w-72 rounded-full bg-gradient-to-br from-primary/8 to-accent/5 blur-3xl"
-      />
-      <motion.div
-        {...floatAnimation(2, -25, 15)}
-        className="pointer-events-none absolute top-1/3 right-[10%] h-56 w-56 rounded-full bg-gradient-to-bl from-secondary/8 to-primary/5 blur-3xl"
-      />
-      <motion.div
-        {...floatAnimation(1, 20, 25)}
-        className="pointer-events-none absolute -bottom-10 left-[30%] h-64 w-64 rounded-full bg-gradient-to-tr from-accent/6 to-primary-light/10 blur-3xl"
-      />
-      <motion.div
-        {...floatAnimation(3, -15, -18)}
-        className="pointer-events-none absolute top-10 right-[35%] h-40 w-40 rounded-full bg-gradient-to-br from-primary-light/20 to-transparent blur-2xl"
-      />
+      {/* Botanical leaf decorations — corners */}
+      <div className="pointer-events-none absolute -top-8 -left-8 h-64 w-64 opacity-70">
+        <LeafDecoration variant="corner-tl" primaryColor="#1B4332" accentColor="#5C8A5C" className="h-full w-full" />
+      </div>
+      <div className="pointer-events-none absolute -bottom-12 -right-8 h-72 w-72 opacity-60">
+        <LeafDecoration variant="corner-br" primaryColor="#1B4332" accentColor="#C9A961" className="h-full w-full" />
+      </div>
+
+      {/* Subtle gold flourish behind heading */}
+      <div className="pointer-events-none absolute top-12 right-[12%] h-40 w-40 rounded-full bg-secondary/8 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-20 left-[15%] h-48 w-48 rounded-full bg-primary/8 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-36">
         <motion.div
@@ -96,7 +78,7 @@ export function Hero() {
               variants={badgePulse}
               initial="initial"
               animate="animate"
-              className="inline-flex items-center gap-1.5 rounded-full bg-accent-light px-4 py-1.5 text-xs font-semibold text-accent shadow-sm"
+              className="inline-flex items-center gap-1.5 rounded-full bg-accent-light px-4 py-1.5 text-xs font-semibold text-primary shadow-sm ring-1 ring-primary/15"
             >
               <CheckCircle size={14} />
               Accepting New Patients
@@ -106,7 +88,7 @@ export function Hero() {
               initial="initial"
               animate="animate"
               style={{ animationDelay: "0.5s" }}
-              className="inline-flex items-center gap-1.5 rounded-full bg-secondary-light px-4 py-1.5 text-xs font-semibold text-secondary shadow-sm"
+              className="inline-flex items-center gap-1.5 rounded-full bg-secondary-light px-4 py-1.5 text-xs font-semibold text-secondary-dark shadow-sm ring-1 ring-secondary/30"
             >
               <Video size={14} />
               Telehealth Available
@@ -118,28 +100,42 @@ export function Hero() {
             variants={childVariants}
             className="font-display text-4xl font-bold tracking-tight text-neutral-dark sm:text-5xl lg:text-6xl xl:text-7xl"
           >
-            You Deserve Support.{" "}
+            Compassionate{" "}
             <span className="bg-gradient-to-r from-primary via-primary-dark to-accent bg-clip-text text-transparent">
-              We&apos;re Here.
-            </span>
+              Mental Health Care
+            </span>{" "}
+            in South Florida
           </motion.h1>
+
+          {/* Flyer tagline — Playfair italic, gold-leaf flanked */}
+          <motion.div
+            variants={childVariants}
+            className="mt-6 flex items-center justify-center gap-4"
+          >
+            <span aria-hidden="true" className="h-px w-12 bg-gradient-to-r from-transparent to-secondary" />
+            <p className="font-display text-xl italic text-secondary-dark sm:text-2xl">
+              {SITE_CONFIG.tagline}
+            </p>
+            <span aria-hidden="true" className="h-px w-12 bg-gradient-to-l from-transparent to-secondary" />
+          </motion.div>
 
           <motion.p
             variants={childVariants}
             className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-neutral-mid sm:text-xl"
           >
-            Compassionate, evidence-based mental health care for individuals and
-            families of all ages. Start your journey towards a healthier mind
-            today.
+            Psychiatry, therapy, and medication management for individuals and
+            families of all ages. In-office in Atlantis, FL or via telehealth
+            across Florida — accepting new patients today.
           </motion.p>
 
-          {/* CTAs with premium glow */}
+          {/* CTAs */}
           <motion.div
             variants={childVariants}
             className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
             <Link
               href="/book"
+              data-book-cta
               className="group inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:bg-primary-dark hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5"
             >
               <Calendar size={20} />
@@ -147,7 +143,7 @@ export function Hero() {
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-full border-2 border-primary bg-white/50 px-8 py-4 text-base font-semibold text-primary shadow-sm transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-secondary bg-white/60 px-8 py-4 text-base font-semibold text-secondary-dark shadow-sm transition-all duration-300 hover:bg-secondary hover:text-white hover:shadow-lg hover:shadow-secondary/30 hover:-translate-y-0.5"
             >
               <MessageCircle size={20} />
               Contact Us
@@ -161,21 +157,21 @@ export function Hero() {
           >
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-light">
-                <Heart size={14} className="text-primary" />
+                <UserCircle size={14} className="text-primary" />
+              </div>
+              <span className="font-medium">Led by {SITE_CONFIG.founder.name}</span>
+            </div>
+            <div className="hidden h-4 w-px bg-neutral-mid/30 sm:block" />
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-light">
+                <Heart size={14} className="text-accent" />
               </div>
               <span className="font-medium">Trusted by 500+ Patients</span>
             </div>
             <div className="hidden h-4 w-px bg-neutral-mid/30 sm:block" />
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-light">
-                <Clock size={14} className="text-accent" />
-              </div>
-              <span className="font-medium">4+ Years Serving Florida</span>
-            </div>
-            <div className="hidden h-4 w-px bg-neutral-mid/30 sm:block" />
-            <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary-light">
-                <Shield size={14} className="text-secondary" />
+                <Shield size={14} className="text-secondary-dark" />
               </div>
               <span className="font-medium">Licensed &amp; Insured</span>
             </div>

@@ -1,16 +1,29 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-primary: #00838F;
-  --color-primary-light: #E0F7FA;
-  --color-primary-dark: #006064;
-  --color-accent: #4CAF50;
-  --color-accent-light: #E8F5E9;
-  --color-secondary: #F5A623;
-  --color-secondary-light: #FFF3E0;
+  /* Forest green primary — pulled from flyer */
+  --color-primary: #1B4332;
+  --color-primary-light: #E8F0EA;
+  --color-primary-dark: #0F2A1F;
+
+  /* Sage / leaf accent */
+  --color-accent: #5C8A5C;
+  --color-accent-light: #E0EBE0;
+
+  /* Gold secondary — pulled from flyer */
+  --color-secondary: #C9A961;
+  --color-secondary-light: #F5EBC1;
+  --color-secondary-dark: #9D7F3F;
+
+  /* Warm cream backgrounds */
+  --color-cream: #FAF8F1;
+  --color-cream-deep: #F1ECDD;
+
+  /* Neutrals */
   --color-neutral-dark: #1A2332;
   --color-neutral-mid: #6B7280;
   --color-neutral-light: #F9FAFB;
+
   --font-display: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
 }
@@ -24,5 +37,18 @@
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);
+  }
+}
+
+@media print {
+  [data-floating-cta],
+  [data-mobile-cta] {
+    display: none !important;
+  }
+  a[href^="tel:"]::after {
+    content: " (" attr(href) ")";
+  }
+  a[href^="mailto:"]::after {
+    content: " (" attr(href) ")";
   }
 }

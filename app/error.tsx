@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { SITE_CONFIG } from "@/lib/site-config";
 
 export default function Error({
   error,
@@ -22,7 +23,7 @@ export default function Error({
         We apologize for the inconvenience. Please try again or contact us if the
         problem persists.
       </p>
-      <div className="mt-8 flex gap-4">
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <button
           onClick={reset}
           className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-primary-dark"
@@ -30,10 +31,10 @@ export default function Error({
           Try Again
         </button>
         <a
-          href="tel:5617970724"
+          href={`tel:${SITE_CONFIG.phone.landline.tel}`}
           className="rounded-full border-2 border-primary px-6 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary hover:text-white"
         >
-          Call (561) 797-0724
+          Call {SITE_CONFIG.phone.landline.display}
         </a>
       </div>
     </div>

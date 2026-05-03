@@ -2,15 +2,19 @@
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Send } from "lucide-react";
+import { Send, Phone, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { SITE_CONFIG } from "@/lib/site-config";
 
 export function LeadCaptureInline() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [error, setError] = useState(false);
+  const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data: Record<string, string>) => {
     setSubmitting(true);
+    setError(false);
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
@@ -25,9 +29,13 @@ export function LeadCaptureInline() {
           preferredContact: "Either",
         }),
       });
-      if (res.ok) setSubmitted(true);
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        setError(true);
+      }
     } catch {
-      // handle error silently
+      setError(true);
     } finally {
       setSubmitting(false);
     }
@@ -36,9 +44,24 @@ export function LeadCaptureInline() {
   if (submitted) {
     return (
       <section className="bg-primary py-16">
-        <div className="mx-auto max-w-2xl text-center text-white">
+        <div className="mx-auto max-w-2xl px-4 text-center text-white">
           <h3 className="font-display text-2xl font-bold">Thank You!</h3>
-          <p className="mt-2">We&apos;ll be in touch within 1 business day.</p>
+          <p className="mt-2 text-primary-light">We&apos;ll be in touch within 1 business day.</p>
+          <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <a
+              href={`tel:${SITE_CONFIG.phone.landline.tel}`}
+              className="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition-all hover:bg-white/25"
+            >
+              <Phone size={16} />
+              Need help now? Call {SITE_CONFIG.phone.landline.display}
+            </a>
+            <Link
+              href="/services"
+              className="inline-flex items-center gap-1 text-sm font-medium text-primary-light hover:text-white"
+            >
+              View our services <ArrowRight size={14} />
+            </Link>
+          </div>
         </div>
       </section>
     );
@@ -80,6 +103,11 @@ export function LeadCaptureInline() {
             className="rounded-lg border-0 px-4 py-3 text-neutral-dark placeholder:text-gray-400 focus:ring-2 focus:ring-secondary"
           />
           <div className="sm:col-span-2">
+            {error && (
+              <p className="mb-3 text-sm text-red-200">
+                Something went wrong. Please try again or call our office at {SITE_CONFIG.phone.landline.display}.
+              </p>
+            )}
             <button
               type="submit"
               disabled={submitting}

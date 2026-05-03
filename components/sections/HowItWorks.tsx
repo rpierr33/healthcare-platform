@@ -2,27 +2,27 @@
 
 import { motion } from "framer-motion";
 import { Phone, UserCheck, HeartPulse } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/site-config";
 
 const steps = [
   {
     icon: Phone,
     title: "Reach Out",
-    description:
-      "Contact us by phone, email, or through our online form. We'll listen to your needs and guide you to the right care.",
+    description: `Call our office at ${SITE_CONFIG.phone.landline.display} or cell ${SITE_CONFIG.phone.cell.display}, email us, or fill out our online form. We respond within 1 business day to understand your mental health needs.`,
     step: "01",
   },
   {
     icon: UserCheck,
     title: "Get Matched",
     description:
-      "Our team will match you with the right provider and create a personalized treatment plan tailored to your goals.",
+      "Our psychiatric team will match you with the right provider and create a personalized treatment plan — whether it's therapy, medication management, or both.",
     step: "02",
   },
   {
     icon: HeartPulse,
     title: "Start Healing",
     description:
-      "Begin your journey with compassionate, evidence-based care — in-person or via telehealth from the comfort of home.",
+      "Begin evidence-based treatment at our Atlantis, FL office or via secure telehealth from anywhere in Florida. We accept most major insurance plans.",
     step: "03",
   },
 ];
@@ -51,7 +51,7 @@ export function HowItWorks() {
           {/* Connecting dashed line between steps — hidden on mobile */}
           <div className="pointer-events-none absolute top-10 left-0 right-0 hidden md:block">
             <div className="mx-auto flex max-w-3xl items-center justify-center px-20">
-              <div className="h-[2px] w-full bg-gradient-to-r from-primary/30 via-primary/50 to-primary/30" style={{ backgroundImage: "repeating-linear-gradient(90deg, #00838F 0px, #00838F 8px, transparent 8px, transparent 16px)" }} />
+              <div className="h-[2px] w-full bg-gradient-to-r from-primary/30 via-primary/50 to-primary/30" style={{ backgroundImage: "repeating-linear-gradient(90deg, #1B4332 0px, #1B4332 8px, transparent 8px, transparent 16px)" }} />
             </div>
           </div>
 
